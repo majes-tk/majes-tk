@@ -225,7 +225,7 @@ def addAdmin():
     if os.path.exists(config.CREATE_ADMIN_FILE):
         if request.method == 'POST':
             try:
-                user.create_user(str.lower(request.form["username"]), request.form["fullname"], request.form["email"], user.hashPassword(request.form["password"]), highPermissionLevel=True)
+                user.create_user(str.lower(request.form["username"]), request.form["email"], user.hashPassword(request.form["password"]), highPermissionLevel=True)
             except sqlalchemy.exc.IntegrityError:
                 return render_template('user-signup.html', perms = lang["high-perms"], message = lang["user-create-error"])
             return redirect(url_for('login'))
@@ -237,7 +237,7 @@ def addAdmin():
 def addUser():
     if request.method == 'POST':
         try:
-            user.create_user(str.lower(request.form["username"]), request.form["fullname"], request.form["email"], user.hashPassword(request.form["password"]), highPermissionLevel=False)
+            user.create_user(str.lower(request.form["username"]), request.form["email"], user.hashPassword(request.form["password"]), highPermissionLevel=False)
         except sqlalchemy.exc.IntegrityError:
             return render_template('user-signup.html', perms = lang["low-perms"], message = lang["user-create-error"])
         return redirect(url_for('login'))
