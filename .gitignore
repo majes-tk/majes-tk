@@ -5,3 +5,4 @@ migrations/versions/*
 .vscode
 smtpconfig.py
 userconfig.py
+*.DS_Store
