@@ -22,7 +22,7 @@ with open("lang/"+config.LANGUAGE+".json",'r',encoding="utf-8") as langfile:
 
 # get current git commit shortname to display in the about page
 
-version = git.Repo(search_parent_directories=True).head.object.hexsha[0:7]
+version = "0.7"
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config.SECRET_KEY
