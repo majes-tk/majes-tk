@@ -20,11 +20,11 @@ sudo apt install libapache2-mod-wsgi-py3 -y
 ###############################
 echo ${green}Clone GitHub Repository${reset}
 
-# Clone the GitHub Repo to /opt/simpleticket
-sudo git clone https://github.com/9hax/simpleticket /opt/simpleticket
+# Clone the GitHub Repo to /opt/app.majes.tk
+sudo git clone https://github.com/9hax/app.majes.tk /opt/app.majes.tk
 
-# make simpleticket directory accessible
-sudo chmod 777 /opt/simpleticket -R
+# make app.majes.tk directory accessible
+sudo chmod 777 /opt/app.majes.tk -R
 
 #####################################
 # Create folder for upgrade backups #
@@ -32,10 +32,10 @@ sudo chmod 777 /opt/simpleticket -R
 echo ${green}Create backup folder${reset}
 
 # make the folder
-mkdir /opt/simpleticket_backups
+mkdir /opt/app.majes.tk_backups
 
-# make simpleticket_backups directory accessible
-sudo chmod 777 /opt/simpleticket_backups -R
+# make app.majes.tk_backups directory accessible
+sudo chmod 777 /opt/app.majes.tk_backups -R
 
 ##################################
 # Create User configuration File #
@@ -43,15 +43,15 @@ sudo chmod 777 /opt/simpleticket_backups -R
 echo ${green}Create user configuration file${reset}
 
 # copy stock config file to userconfig.py. this is in te gitignore, so git should never touch it.
-cp /opt/simpleticket/config.py /opt/simpleticket/userconfig.py
+cp /opt/app.majes.tk/config.py /opt/app.majes.tk/userconfig.py
 
 #######################
 # Python dependencies #
 #######################
 echo ${green}Python dependencies setup${reset}
 
-# move to simpleticket directory o make the following steps easier
-cd /opt/simpleticket
+# move to app.majes.tk directory o make the following steps easier
+cd /opt/app.majes.tk
 
 # install current requirements using pip3
 pip3 install -r requirements.txt
@@ -64,11 +64,11 @@ echo ${green}Begin apache2 cofniguration${reset}
 # Disable the default apache2 site
 sudo a2dissite 000-default.conf
 
-# Copy the simpleticket configuration file to the apache2 config directory
-sudo cp /opt/simpleticket/simpleticket.conf /etc/apache2/sites-available
+# Copy the app.majes.tk configuration file to the apache2 config directory
+sudo cp /opt/app.majes.tk/majestkapp.conf /etc/apache2/sites-available
 
 # Enable the site by linking to sites-enabled
-sudo a2ensite simpleticket.conf
+sudo a2ensite majestkapp.conf
 
 # Reload apache2 web server to make site available
 sudo service apache2 stop
@@ -95,7 +95,7 @@ then
  echo
  read -p "Please put in the Port number that the SMTP Server is running on. > " SMTPPORTNUMBER
  echo
- read -p "Please put in the Email Address that you want simpleticket to send EMmail from. > " SMTPUSER
+ read -p "Please put in the Email Address that you want app.majes.tk to send EMmail from. > " SMTPUSER
  echo
  echo "Please put in the Password of the User Account that you want to send email from. > "
  read -s SMTPKEY
@@ -117,4 +117,4 @@ echo ${green}Start website${reset}
 # Start apache2
 sudo service apache2 start
 
-echo ${green}You can set up SimpleTicket with the file /opt/simpleticket/config.py${reset}
+echo ${green}You can set up majestkapp with the file /opt/app.majes.tk/config.py${reset}

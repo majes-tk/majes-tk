@@ -9,22 +9,22 @@ sudo service apache2 stop
 
 # make backup of the current system
 echo ${green}Creating backup...${reset}
-mkdir /opt/simpleticket_backups/$(date +"%d-%m-%Y")
-cp /opt/simpleticket/* /opt/simpleticket_backups/$(date +"%d-%m-%Y") -R
+mkdir /opt/app.majes.tk_backups/$(date +"%d-%m-%Y")
+cp /opt/app.majes.tk/* /opt/app.majes.tk_backups/$(date +"%d-%m-%Y") -R
 
 # Pull changes
 echo ${green}Pulling updates...${reset}
-cd /opt/simpleticket
+cd /opt/app.majes.tk
 sudo git pull
 
-# make simpleticket directory accessible
+# make app.majes.tk directory accessible
 echo ${green}Changing directory perms...${reset}
-sudo chmod 777 /opt/simpleticket -R
+sudo chmod 777 /opt/app.majes.tk -R
 
 # Start database migrations
 echo ${green}Running database migrations...${reset}
 flask db upgrade
-flask db migrate -m "SimpleTicket Update"
+flask db migrate -m "app.majes.tk Update"
 
 # Start apache2
 echo ${green}Starting apache...${reset}
