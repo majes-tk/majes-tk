@@ -5,7 +5,7 @@ import time
 import datetime
 import random
 import string
-from simpleticket import m
+from majestkapp import m
 
 try:
     import userconfig as config

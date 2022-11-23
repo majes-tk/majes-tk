@@ -25,10 +25,10 @@ REQUIRE_LOGIN = True
 LANGUAGE = "en_EN"
 
 # Site Name (Displayed in header, title, about page...)
-SITE_NAME = "SimpleTicket Development Instance"
+SITE_NAME = "Majes.tk"
 
 # Needed for sessions. Change this to logout all users.
-SECRET_KEY = 'm-_2hz7kJL-oOHtwKkI5ew'
+SECRET_KEY = 'm-_2hz7kJL-oOHtwKkI5xw'
 
 # create-admin-user file path
 CREATE_ADMIN_FILE = "_CREATE_ADMIN_ALLOWED"

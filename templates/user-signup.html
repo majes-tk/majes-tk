@@ -1,7 +1,7 @@
 {% extends "userform.html" %}
 {% block body %}
 <figure class="front">
-  <div class="mdl-card mdl-shadow--6dp"  style="height: 425px;">
+  <div class="mdl-card mdl-shadow--6dp"  style="height: 100%;">
     <form action="" method="POST">
       <div class="mdl-card__title mdl-color--primary mdl-color-text--white relative">
         <h2 class="mdl-card__title-text">{{lang["user-signup-title"]}}</h2>
@@ -12,17 +12,9 @@
         {{message}}
         <br>
         {% endif %}
-        {{lang["user-signup-text"]}}
-        {% if perms %}
-        {{perms}}
-        {% endif %}
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" id="login" name="username" />
           <label class="mdl-textfield__label" for="login">{{lang["username"]}}</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" id="fullname" name="fullname" />
-          <label class="mdl-textfield__label" for="fullname">{{lang["fullname"]}}</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="email" id="email" name="email" />
