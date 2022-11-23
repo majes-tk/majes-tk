@@ -21,7 +21,7 @@ sudo apt install libapache2-mod-wsgi-py3 -y
 echo ${green}Clone GitHub Repository${reset}
 
 # Clone the GitHub Repo to /opt/app.majes.tk
-sudo git clone https://github.com/9hax/app.majes.tk /opt/app.majes.tk
+sudo git clone https://github.com/majes-tk/majes-tk /opt/app.majes.tk
 
 # make app.majes.tk directory accessible
 sudo chmod 777 /opt/app.majes.tk -R
