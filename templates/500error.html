@@ -3,7 +3,7 @@
 {% block body %}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
   <p>
-    {{lang["500error-description"]}}
+    {{lang["500error-description"] | safe}}
   </p>
   <a href="/">{{lang["return-home"]}}</a>
   <a href=".">{{lang["reload"]}}</a>
