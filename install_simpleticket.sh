@@ -95,15 +95,15 @@ then
  echo
  read -p "Please put in the Port number that the SMTP Server is running on. > " SMTPPORTNUMBER
  echo
- read -p "Please put in the Email Address that you want app.majes.tk to send EMmail from. > " SMTPUSER
+ read -p "Please put in the Email Address that you want app.majes.tk to send EMail from. > " SMTPUSER
  echo
- echo "Please put in the Password of the User Account that you want to send email from. > "
+ echo "Please put in the Password of the User Account that you want to send EMail from. > "
  read -s SMTPKEY
  SMTPSERVER=
- sed -i "s,SMTP_SERVER = None,SMTP_SERVER = $SMTPSERVER," smtpconfig.py
+ sed -i "s,SMTP_SERVER = None,SMTP_SERVER = \"$SMTPSERVER\"," smtpconfig.py
  sed -i "s,SMTP_PORT = None,SMTP_PORT = $SMTPPORTNUMBER," smtpconfig.py
- sed -i "s,SMTP_USER = None,SMTP_USER = $SMTPUSER," smtpconfig.py
- sed -i "s,SMTP_PASSWORD = None,SMTP_PASSWORD = $SMTPKEY," smtpconfig.py
+ sed -i "s,SMTP_USER = None,SMTP_USER = \"$SMTPUSER\"," smtpconfig.py
+ sed -i "s,SMTP_PASSWORD = None,SMTP_PASSWORD = \"$SMTPKEY\"," smtpconfig.py
 fi
 
 echo "You can repeat SMTP-Setup by editing the variables in smtpconfig.py manually."

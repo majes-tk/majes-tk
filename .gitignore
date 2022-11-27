@@ -1,5 +1,5 @@
 *.pyc
-simpleticket.db
+simpleorder.db
 migrations/versions/*
 !migrations/versions/.exists
 .vscode

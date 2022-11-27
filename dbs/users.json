@@ -1,12 +1,12 @@
 [
     {
-        "name" : "ticketadmin",
-        "fullname" : "Ticketsystem-Administrator",
+        "name" : "orderadmin",
+        "fullname" : "Ordersystem-Administrator",
         "authhash" : ""
      } ,
     {
-        "name" : "ticketuser",
-        "fullname" : "Ticketsystem-Benutzer",
+        "name" : "orderuser",
+        "fullname" : "Ordersystem-Benutzer",
         "authhash" : ""
     }, 
     {

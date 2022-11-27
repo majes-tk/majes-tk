@@ -3,8 +3,12 @@
 {% block body %}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
   <p>
-    {{lang["403error-description"]}}
+    {{lang["403error-description"]}}</br>
+    {% if current_user == None %}
+    <a href="/login">{{lang["login"]}}</a>
+    {% else %}
+    <a href="/">{{lang["return-home"]}}</a>
+    {% endif %}
   </p>
-  <a href="/">{{lang["return-home"]}}</a>
 </div>
 {% endblock %}

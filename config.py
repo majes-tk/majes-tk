@@ -7,13 +7,13 @@
 ###############################################
 # This is not used when using the WSGI mod for apache.
 
-# interface ip and port number to launch the ticket system on.
+# interface ip and port number to launch the order system on.
 # setting 0.0.0.0 as the interface ip exposes the flask host on all available interfaces.
 INTERFACE_IP = "0.0.0.0"
 INTERFACE_PORT = "80"
 
 ######################################
-# General SimpleTicket Configuration #
+# General SimpleOrder Configuration #
 ######################################
 
 # Require login for opening the home page?
@@ -21,7 +21,7 @@ INTERFACE_PORT = "80"
 REQUIRE_LOGIN = True
 
 # Language file that is used for the web interface.
-# The language file has .json as a file format and is located in the lang directory at the simpleticket install path root.
+# The language file has .json as a file format and is located in the lang directory at the simpleorder install path root.
 LANGUAGE = "en_EN"
 
 # Site Name (Displayed in header, title, about page...)

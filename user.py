@@ -41,27 +41,27 @@ def get_userid(username):
 def get_user(userid):
     return m.User.query.get(userid)
 
-def create_ticket(title, text, media, created_by, assigned_to):
-    new_ticket = m.Ticket()
-    new_ticket.title = title
-    new_ticket.is_open = True
-    new_ticket.text = text
-    new_ticket.media = media
-    new_ticket.time = time.time()
-    new_ticket.created_by = created_by
-    new_ticket.assigned_to = assigned_to
-    m.db.session.add(new_ticket)
+def create_order(title, text, media, created_by, assigned_to):
+    new_order = m.Order()
+    new_order.title = title
+    new_order.is_open = True
+    new_order.text = text
+    new_order.media = media
+    new_order.time = time.time()
+    new_order.created_by = created_by
+    new_order.assigned_to = assigned_to
+    m.db.session.add(new_order)
     m.db.session.commit()
 
-def create_ticket_reply(text, media, created_by, main_ticket_id, isNote = False):
-    new_ticket = m.TicketReply()
-    new_ticket.text = text
-    new_ticket.media = media
-    new_ticket.isNote = isNote
-    new_ticket.time = time.time()
-    new_ticket.created_by = created_by
-    new_ticket.main_ticket_id = main_ticket_id
-    m.db.session.add(new_ticket)
+def create_order_reply(text, media, created_by, main_order_id, isNote = False):
+    new_order = m.OrderReply()
+    new_order.text = text
+    new_order.media = media
+    new_order.isNote = isNote
+    new_order.time = time.time()
+    new_order.created_by = created_by
+    new_order.main_order_id = main_order_id
+    m.db.session.add(new_order)
     m.db.session.commit()
 
 def create_user(username, email, hashedPassword, passwordResetTimer = -1, highPermissionLevel = 0):
@@ -72,8 +72,12 @@ def create_user(username, email, hashedPassword, passwordResetTimer = -1, highPe
     new_user.password = hashedPassword
     new_user.passwordResetTimer = passwordResetTimer
     new_user.highPermissionLevel = highPermissionLevel
-    m.db.session.add(new_user)
-    m.db.session.commit()
+    try:
+        m.db.session.add(new_user)
+        m.db.session.commit()
+    except:
+        m.db.session.rollback()
+        raise ValueError('Value already in use.')
 
 def modify_user_password(userid, newPasswordHash):
     modified_user = get_user(userid)
@@ -95,9 +99,9 @@ def getTime(timestamp):
     except:
         return "Invalid time"
 
-def hasValidReply(ticketid):
-    ticketReplyList = m.TicketReply.query.filter_by(main_ticket_id = ticketid).all()
-    for reply in ticketReplyList:
+def hasValidReply(orderid):
+    orderReplyList = m.OrderReply.query.filter_by(main_order_id = orderid).all()
+    for reply in orderReplyList:
         if m.User.query.filter_by(id = reply.created_by_id).first().highPermissionLevel:
             return True
     return False
