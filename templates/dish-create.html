@@ -1,0 +1,25 @@
+{% set title = lang["create-dish"]%} {% extends "master.html" %} {% block body %}
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width:100%">
+    <p>
+        <form action="" method="POST">
+            {{lang["create-dish"]}}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="first" name="dishname">
+                <label class="mdl-textfield__label" for="first">{{lang["dish-name"]}}</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="first" name="price">
+                <label class="mdl-textfield__label" for="first">{{lang["dish-price"]}}</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <textarea class="mdl-textfield__input" type="text" rows="3" id="sample5" name="description" style="width: 100%"></textarea>
+                <label class="mdl-textfield__label" for="sample5">{{lang["dish-description"]}}</label>
+            </div>
+
+            <button type="submit" class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                {{lang["create"]}}
+            </button>
+        </form>
+    </p>
+</div>
+{% endblock %}

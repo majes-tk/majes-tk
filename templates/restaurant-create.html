@@ -1,0 +1,32 @@
+{% set title = lang["create-dish"]%} {% extends "master.html" %} {% block body %}
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width:100%">
+    <p>
+        <form action="" method="POST">
+            {{lang["create-restaurant"]}}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="first" name="restaurant-name">
+                <label class="mdl-textfield__label" for="first">{{lang["restaurant-name"]}}</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="first" name="restaurant-style">
+                <label class="mdl-textfield__label" for="first">{{lang["restaurant-style"]}}</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="first" name="restaurant-delivery_cost">
+                <label class="mdl-textfield__label" for="first">{{lang["restaurant-delivery"]}}</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <textarea class="mdl-textfield__input" type="text" rows="3" id="sample5" name="restaurant-info" style="width: 100%"></textarea>
+                <label class="mdl-textfield__label" for="sample5">{{lang["restaurant-info"]}}</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="first" name="linked-user-email">
+                <label class="mdl-textfield__label" for="first">{{lang["restaurant-linked-user"]}}</label>
+            </div>
+            <button type="submit" class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                {{lang["create"]}}
+            </button>
+        </form>
+    </p>
+</div>
+{% endblock %}

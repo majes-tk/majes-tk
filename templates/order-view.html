@@ -1,4 +1,4 @@
-{% set title = lang["view-order"]+" "+order.title %} {% extends "master.html" %} {% block body %}
+{% set title = lang["view-order"]+" #"+order.id|string + " " + lang["order-created-by"] + " " + order.created_by.fullname %} {% extends "master.html" %} {% block body %}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%">
     <h2>{{order.title}}</h2>
     {{lang["order-created-by"] + " " + order.created_by.fullname}}

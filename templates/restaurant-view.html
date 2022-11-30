@@ -1,0 +1,15 @@
+{% set title = lang["view-restaurant"]+" "+restaurant.name %} {% extends "master.html" %} {% block body %}
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%">
+  <h2>{{restaurant.name}}</h2>
+  <p>{{restaurant.info}}</p>
+
+</div>
+
+{% for dish in dishes %}
+{% include 'dish-card.html' %}
+<!--div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%; ">
+    <p>{{dish.name}}</p>
+  </div-->
+{% endfor %}
+
+{% endblock %}

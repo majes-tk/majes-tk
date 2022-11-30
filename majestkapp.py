@@ -54,8 +54,6 @@ def global_template_vars():
         "lang": lang,
         "stversion": version,
         "current_user": g.current_user,
-        "order_list": m.Order.query.all(),
-        "order_replies": m.OrderReply.query.all(),
         "ctime": time.ctime,
         "getTime": user.getTime,
         "hasValidReply": user.hasValidReply
@@ -85,7 +83,7 @@ def home():
     # the index and home landing page. this displays all the active and closed orders.
     if config.REQUIRE_LOGIN:
         if "login" in session.keys() and session['login']:
-            return render_template('index.html')
+            return render_template('index.html', orders=m.Order.query.all())
         else:
             return redirect(url_for("login"))
     else:
@@ -107,7 +105,7 @@ def createOrder():
 # the page to view and edit orders.
 
 
-@app.route('/view/<orderid>', methods=['GET', 'POST'])
+@app.route('/view-order/<orderid>', methods=['GET', 'POST'])
 def viewOrder(orderid):
     order = m.Order.query.filter_by(id=orderid).first()
     if order == None:
@@ -122,7 +120,7 @@ def viewOrder(orderid):
         abort(403)
 
 
-@app.route('/view/<orderid>/close')
+@app.route('/view-order/<orderid>/close')
 def closeOrder(orderid):
     order = m.Order.query.filter_by(id=orderid).first()
     if order == None:
@@ -138,7 +136,7 @@ def closeOrder(orderid):
         abort(403)
 
 
-@app.route('/view/<orderid>/reopen')
+@app.route('/view-order/<orderid>/reopen')
 def reopenOrder(orderid):
     order = m.Order.query.filter_by(id=orderid).first()
     if order == None:
@@ -154,7 +152,7 @@ def reopenOrder(orderid):
         abort(403)
 
 
-@app.route('/view/<orderid>/hide')
+@app.route('/view-order/<orderid>/hide')
 def hideOrder(orderid):
     order = m.Order.query.filter_by(id=orderid).first()
     if order == None:
@@ -170,7 +168,7 @@ def hideOrder(orderid):
         abort(403)
 
 
-@app.route('/view/<orderid>/unhide')
+@app.route('/view-order/<orderid>/unhide')
 def unhideOrder(orderid):
     order = m.Order.query.filter_by(id=orderid).first()
     if order == None:
@@ -186,7 +184,7 @@ def unhideOrder(orderid):
         abort(403)
 
 
-@app.route('/view/<orderid>/reply', methods=['POST'])
+@app.route('/view-order/<orderid>/reply', methods=['POST'])
 def createOrderReply(orderid):
     if "login" in session.keys() and session['login']:
         if request.method == 'POST':
@@ -281,6 +279,63 @@ def addUser():
     except Exception:
         return render_template('user-signup.html', perms=lang["low-perms"], message=lang["user-create-error"])
     return render_template('user-signup.html', perms=lang["low-perms"])
+
+
+@app.route('/add-dish/<restaurantid>', methods=['GET', 'POST'])
+def addDish(restaurantid):
+    if (
+        "login" in session.keys() 
+        and session['login'] 
+        and ( 
+            g.current_user.highPermissionLevel 
+            or g.current_user.isRestaurant
+            )
+        ):
+        if request.method == 'POST':
+            user.create_dish(
+                request.form['dishname'],
+                float(request.form['price']),
+                request.form['description'],
+                m.Restaurant.query.filter_by(id=restaurantid).first().id
+            )
+            return redirect(url_for('home'))
+        return render_template('dish-create.html')
+    else: 
+        abort(403)
+
+@app.route('/add-restaurant', methods=['GET', 'POST'])
+def addReastaurant():
+    if g.current_user.highPermissionLevel:
+        if request.method == 'POST':
+            id = user.create_restaurant(
+                request.form["restaurant-name"],
+                request.form["restaurant-info"],
+                request.form["restaurant-style"],
+                request.form["restaurant-delivery_cost"], 
+                request.form["linked-user-email"])
+            print(id)
+            return redirect(url_for('home'))
+        return render_template('restaurant-create.html')
+    abort
+
+@app.route('/view-restaurant/<restaurantid>')
+def view_restaurant(restaurantid):
+    if "login" in session.keys() and session["login"]:
+        restaurant = m.Restaurant.query.filter_by(id=restaurantid).first()
+        if restaurant == None:
+            abort(404)
+        if g.current_user.isRestaurant: 
+            orders = m.Order.query.filter_by(restaurant_id = restaurantid)
+        dishesquery = m.Dish.query.filter_by(served_at_id = restaurantid)
+        dishes = []
+        for i in range(len(list(dishesquery))):
+            dish = dishesquery[i]
+            print(dish.media)
+            dish.media = json.loads(dish.media)
+            dishes.append(dish)
+        return render_template('restaurant-view.html', orders=orders, dishes=dishes, restaurant=restaurant)
+    else:
+        abort(403)
 
 
 @app.route('/account-settings', methods=['GET', 'POST'])

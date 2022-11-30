@@ -13,7 +13,7 @@
                     {% endif %}
                 </tr>
             </thead>
-            {% for order in order_list %} {% if not order.hidden %} {% if order.created_by.id == current_user.id or current_user.highPermissionLevel %}
+            {% for order in orders %} {% if not order.hidden %} {% if order.created_by.id == current_user.id or current_user.highPermissionLevel %}
             <tr style="cursor: pointer" onclick="window.location='view/{{order.id}}'">
                 <td class="mdl-data-table__cell--non-numeric" style="background: {{ 'lightcoral' if order.is_open and not hasValidReply(order.id) else 'khaki' if order.is_open and hasValidReply(order.id) else 'lightgreen'}}">{{ lang["order-status-open"] if order.is_open and not hasValidReply(order.id) else lang["order-status-assigned"] if order.is_open and hasValidReply(order.id) else lang["order-status-closed"]}}
 

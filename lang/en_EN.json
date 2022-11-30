@@ -24,6 +24,7 @@
     "home": "Home",
     "create-order": "Order now",
     "view-order": "Viewing Order",
+    "view-restaurant": "Vieweing Restaurant",
     "faq": "FAQ",
     "about": "About Majes.tk",
     "about-text": "Majes.tk is the perfect place for you and your favourite restaurant.<br>Order food, reserve a table or check out the menu of your favourite restaurants.<br>Majes.tk uses a customized version of SimpleOrder, which has an Apache OpenSource license. For further information please visit the GitHub project site.",
@@ -71,4 +72,13 @@
     "write-reply": "Add note",
     "save": "Save",
     "save-as-note": "Save as Note",
+    "create-dish": "Add a dish to your restaurant",
+    "dish-name": "Dish Name",
+    "dish-price": "Price in €",
+    "dish-description": "Description",
+    "restaurant-name": "Restaurant Name",
+    "restaurant-style": "Food Style",
+    "restaurant-delivery": "Delivery Cost in €",
+    "restaurant-info": "Description",
+    "restaurant-linked-user": "Email of User Account associated to this restaurant"
 }

@@ -13,6 +13,8 @@ class User(db.Model):
         db.Integer, unique=False, nullable=True, default=-1)
     highPermissionLevel = db.Column(
         db.Boolean, unique=False, nullable=False, default=False)
+    isRestaurant = db.Column(
+        db.Boolean, unique=False, default=False)
 
     def __repr__(self):
         return '<User %r, %s, %s>' % self.username, self.email, self.isRestaurant
@@ -63,9 +65,12 @@ class Restaurant(db.Model):
     show_tally = db.Column(db.Boolean, default=False)
     tally_amount = db.Column(db.Integer, default=0, nullable=False)
     delivery_cost = db.Column(db.Integer, default=0, nullable=True)
-
+    linked_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=0, nullable=False)
+    linked_user = db.relationship(
+        'User', backref='restaurant_of', foreign_keys=[linked_user_id])
+    
     def __repr__(self):
-        return "<Restaurant %s>" % self.name
+        return "<Restaurant %s of user %s>" % (self.name, self.linked_user.name)
 
 
 class Dish(db.Model):

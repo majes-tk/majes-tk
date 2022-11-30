@@ -6,6 +6,7 @@ import datetime
 import random
 import string
 from majestkapp import m
+import base64
 
 try:
     import userconfig as config
@@ -78,6 +79,29 @@ def create_user(username, email, hashedPassword, passwordResetTimer = -1, highPe
     except:
         m.db.session.rollback()
         raise ValueError('Value already in use.')
+
+def create_dish(dishname, price=0, description = "", served_at_id = 0):
+    new_dish = m.Dish()
+    new_dish.name = dishname
+    new_dish.price = price
+    new_dish.info = description
+    new_dish.served_at = m.Restaurant.query.filter_by(id=served_at_id).first()
+    m.db.session.add(new_dish)
+    m.db.session.commit()
+
+def create_restaurant(restaurant_name, info, style, delivery_cost, useremail):
+    new_restaurant = m.Restaurant()
+    new_restaurant.name = restaurant_name
+    new_restaurant.info = info
+    new_restaurant.style = style
+    new_restaurant.delivery_cost = int(delivery_cost)
+    linkedUser = m.User.query.filter_by(email=useremail).first()
+    new_restaurant.linked_user = linkedUser
+    m.db.session.add(new_restaurant)
+    linkedUser.isRestaurant = True
+    m.db.session.commit()
+    return new_restaurant.id 
+
 
 def modify_user_password(userid, newPasswordHash):
     modified_user = get_user(userid)
