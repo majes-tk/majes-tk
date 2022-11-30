@@ -29,7 +29,7 @@ The default path for the installation is /opt/simpleorder and cannot be changed 
 
 The install script can be run using this command:
 
-    curl -s https://raw.githubusercontent.com/9hax/simpleorder/main/install_simpleorder.sh | sudo bash
+    curl -s https://raw.githubusercontent.com/majes-tk/majes-tk/main/install_simpleticket.sh | sudo bash
 
 This will install apache2, git, python3 and some python3 libraries.
 It will also disable the default apache2 welcome page which runs on port 80 to stop it from showing up when not called with the correct domain.
