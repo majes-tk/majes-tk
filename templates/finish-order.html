@@ -1,0 +1,67 @@
+{% set title = lang["checkout"] %} {% extends "master.html" %} {% block body %}
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%">
+  <h3>{{lang["order-review-text"]}}</h3>
+
+  {% if cart_content|length == 0 %}
+  <p>{{lang["cart-empty"]}}</p>
+  {% else %}
+  <ul class="demo-list-three mdl-list">
+    {% for cart_item in cart_content %}
+    {% set dish = cart_item.dish %}
+    <li class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-icon" tyle="border-radius: 10% ;">dinner_dining</i>
+        <span>{{dish.name}}</span>
+        <span class="mdl-list__item-text-body">
+          {{dish.served_at.name}}
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+        <p>{{ "{:,.2f}".format(dish.price)}}€</p>
+      </span>
+    </li>
+    {% endfor %}
+    <li class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-icon" tyle="border-radius: 10% ;">paid</i>
+        <span>{{lang["fee-title"]}}</span>
+        <span class="mdl-list__item-text-body">
+          Majestk
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+        <p>{{ "{:,.2f}".format(config.FEE)}}€</p>
+      </span>
+    </li>
+  </ul>
+  <hr>
+  <p>Your total is {{ "{:,.2f}".format(total + config.FEE)}}€.</p>
+  <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="consentbox">
+    <input type="checkbox" id="consentbox" class="mdl-checkbox__input" />
+    <span class="mdl-checkbox__label">{{lang["user-consent-checkbox-text"]|safe}}</span>
+  </label>
+  <br>
+  <button id="order-button" onclick="openPaypal()"
+    class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" disabled>
+    {{lang["confirm-order-paypal"]}}
+  </button>
+  </form>
+  <script>
+    const checkbox = document.getElementById('consentbox');
+    checkbox.addEventListener('change', () => { document.getElementById('order-button').disabled = !checkbox.checked })
+    function openPaypal() {
+      amount = {{ "{:,.2f}".format(total + config.FEE) }}
+    window.open("https://paypal.me/9hax/" + amount, '_blank');
+    setTimeout(function () {
+      window.location = "/userconfirmorder"
+    }, 10000);
+    }
+  </script>
+  {% endif %}
+</div>
+<style>
+  .mdl-list__item {
+    border-top: 1px solid lightgrey;
+  }
+</style>
+{% endblock %}

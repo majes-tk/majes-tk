@@ -1,0 +1,42 @@
+{% set title = lang["cart"] %} {% extends "master.html" %} {% block body %}
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%">
+  <h3>{{lang["cart-content-text"]}}</h3>
+
+  {% if cart_content|length == 0 %}
+  <p>{{lang["cart-empty"]}}</p>
+  {% else %}
+  <ul class="demo-list-three mdl-list">
+    {% for cart_item in cart_content %}
+    {% set dish = cart_item.dish %}
+    <li class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-icon" tyle="border-radius: 10% ;">dinner_dining</i>
+        <span>{{dish.name}}</span>
+        <span class="mdl-list__item-text-body">
+          {{dish.served_at.name}}
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+        <p>{{ "{:,.2f}".format(dish.price)}}€</p>
+    </span>
+      <span class="mdl-list__item-secondary-content">
+          <a class="mdl-list__item-secondary-action" href="/remove-from-cart/{{dish.id}}"><i class="material-icons">delete</i></a>
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+  <hr>
+  <p>Majestk takes a fee of {{ "{:,.2f}".format(config.FEE)}}€, so your total is {{ "{:,.2f}".format(total + config.FEE)}}€.</p>
+  <a href="/finish-order">
+    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit">
+      {{lang["proceed-checkout"]}}
+    </button>
+  </a>
+  {% endif %} 
+</div>
+<style>
+  .mdl-list__item {
+  border-top:1px solid lightgrey;
+}
+</style>
+{% endblock %}

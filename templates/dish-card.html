@@ -1,11 +1,11 @@
 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
-    <div class="mdl-card__title mdl-card--expand mdl-color--teal-300" style="background: url({{dish.media[1]}})">
+    <div class="mdl-card__title mdl-card--expand mdl-color--teal-300" style="background-image:linear-gradient(rgba(255,255,255, 0.5), rgba(255,255,255, 0.5)),url({{dish.media}})">
       <h2 class="mdl-card__title-text">{{dish.name}}</h2>
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
       {{dish.info}}
     </div>
     <div class="mdl-card__actions mdl-card--border">
-      <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple">{{dish.price}}€<span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></a>
+      <a href="/add-to-cart/{{dish.served_at.id}}/{{dish.id}}" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple">{{lang["buy-for-price-pre"]}}{{ "{:,.2f}".format(dish.price)}}€{{lang["buy-for-price-post"]}}<span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></a>
     </div>
   </div>

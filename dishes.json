@@ -1,0 +1,261 @@
+{
+    "Pizza Planet Friedrichsfelde-Ost": [
+        {
+            "name": "Pizza Margherita",
+            "price": 9.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A classic pizza topped with tomato sauce, mozzarella cheese, and fresh basil."
+        },
+        {
+            "name": "Pizza Salami",
+            "price": 10.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A pizza topped with tomato sauce, mozzarella cheese, and spicy salami."
+        },
+        {
+            "name": "Pizza Funghi",
+            "price": 11.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A pizza topped with tomato sauce, mozzarella cheese, and mixed mushrooms."
+        },
+        {
+            "name": "Pizza Pepperoni",
+            "price": 10.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A pizza topped with tomato sauce, mozzarella cheese, and spicy pepperoni."
+        },
+        {
+            "name": "Pizza Hawaii",
+            "price": 12.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A pizza topped with tomato sauce, mozzarella cheese, ham, and pineapple."
+        }
+    ],
+    "Thuy's Asia Imbiss": [
+        {
+            "name": "Gebratener Reis mit Hühnchen",
+            "price": 8.99,
+            "allergens": [
+                "soy"
+            ],
+            "description": "Fried rice with chicken, vegetables, and soy sauce."
+        },
+        {
+            "name": "Gegrilltes Hähnchen mit Reis",
+            "price": 9.99,
+            "allergens": [],
+            "description": "Grilled chicken with rice and a side of vegetables."
+        },
+        {
+            "name": "Frühlingsrolle mit Gemüse",
+            "price": 7.99,
+            "allergens": [
+                "soy",
+                "nuts"
+            ],
+            "description": "Spring rolls filled with vegetables and served with a soy-based dipping sauce."
+        },
+        {
+            "name": "Nudelsuppe mit Garnelen",
+            "price": 10.99,
+            "allergens": [
+                "shellfish",
+                "soy"
+            ],
+            "description": "Noodle soup with shrimp and vegetables in a savory broth."
+        },
+        {
+            "name": "Hühnersalat mit Cashewkernen",
+            "price": 11.99,
+            "allergens": [
+                "nuts"
+            ],
+            "description": "Chicken salad with mixed vegetables and cashew nuts."
+        }
+    ],
+    "Verified Döner": [
+        {
+            "name": "Döner Kebab",
+            "price": 6.99,
+            "allergens": [
+                "gluten"
+            ],
+            "description": "Thin slices of marinated meat served in a pita bread with lettuce, tomato, and a yogurt-based sauce."
+        },
+        {
+            "name": "Döner-Box",
+            "price": 8.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A box filled with döner kebab meat, rice, lettuce, tomato, and a yogurt-based sauce."
+        },
+        {
+            "name": "Döner mit Pommes",
+            "price": 7.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "Döner kebab meat served with fries and a yogurt-based dipping sauce."
+        },
+        {
+            "name": "Käse-Döner",
+            "price": 7.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "Döner kebab meat topped with melted cheese and served in a pita bread with lettuce, tomato, and a yogurt-based sauce."
+        },
+        {
+            "name": "Döner-Wrap",
+            "price": 7.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "Döner kebab meat, lettuce, tomato, and a yogurt-based sauce wrapped in a flour tortilla."
+        }
+    ],
+    "Burger Depot": [
+        {
+            "name": "Cheeseburger mit Speck und Zwiebeln",
+            "price": 8.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A cheeseburger with bacon and onion on a toasted bun."
+        },
+        {
+            "name": "Hamburger mit Rindfleisch und Tomate",
+            "price": 7.99,
+            "allergens": [
+                "gluten"
+            ],
+            "description": "A hamburger with ground beef and tomato on a toasted bun."
+        },
+        {
+            "name": "Veggie-Burger mit Gemüse und Avocado",
+            "price": 9.99,
+            "allergens": [
+                "nuts"
+            ],
+            "description": "A vegetarian burger with mixed vegetables and avocado on a toasted bun."
+        },
+        {
+            "name": "Chickenburger mit gegrilltem Hähnchen und Salat",
+            "price": 9.99,
+            "allergens": [
+                "gluten"
+            ],
+            "description": "A chicken burger with grilled chicken and lettuce on a toasted bun."
+        },
+        {
+            "name": "Fishburger mit Fischfilet und Remoulade",
+            "price": 10.99,
+            "allergens": [
+                "gluten",
+                "dairy"
+            ],
+            "description": "A fish burger with a fried fish fillet and remoulade sauce on a toasted bun."
+        }
+    ],
+    "Gyros Gallery": [
+        {
+            "name": "Spanakopita mit Spinat und Feta",
+            "price": 9.99,
+            "allergens": [
+                "gluten",
+                "dairy",
+                "nuts"
+            ],
+            "description": "A savory pie made with phyllo dough, spinach, and feta cheese."
+        },
+        {
+            "name": "Dolmadakia mit Reis und Weinblättern",
+            "price": 8.99,
+            "allergens": [
+                "dairy"
+            ],
+            "description": "Stuffed grape leaves filled with rice and herbs."
+        },
+        {
+            "name": "Moussaka mit Hackfleisch und Auberginen",
+            "price": 11.99,
+            "allergens": [
+                "dairy"
+            ],
+            "description": "A layered casserole with ground meat, eggplant, and a creamy sauce."
+        },
+        {
+            "name": "Tzatziki mit Joghurt und Gurke",
+            "price": 5.99,
+            "allergens": [
+                "dairy"
+            ],
+            "description": "A refreshing dip made with yogurt, cucumber, and herbs."
+        },
+        {
+            "name": "Griechischer Salat mit Oliven und Tomaten",
+            "price": 6.99,
+            "allergens": [],
+            "description": "A traditional Greek salad with tomatoes, cucumber, olives, and feta cheese."
+        }
+    ],
+    "Steakhousen": [
+        {
+            "name": "Rumpsteak mit Pfeffersauce",
+            "price": 19.99,
+            "allergens": [
+                "dairy"
+            ],
+            "description": "A rump steak with a creamy peppercorn sauce."
+        },
+        {
+            "name": "Lendensteak mit Kräuterbutter",
+            "price": 21.99,
+            "allergens": [
+                "dairy"
+            ],
+            "description": "A ribeye steak with a herb butter."
+        },
+        {
+            "name": "Entrecôte mit Bratkartoffeln",
+            "price": 24.99,
+            "allergens": [],
+            "description": "A ribeye steak with fried potatoes."
+        },
+        {
+            "name": "Hüftsteak mit Bratkartoffeln",
+            "price": 19.99,
+            "allergens": [],
+            "description": "A sirloin steak with fried potatoes."
+        },
+        {
+            "name": "Roastbeef mit Meerrettichsauce",
+            "price": 22.99,
+            "allergens": [
+                "dairy"
+            ],
+            "description": "Thinly sliced roast beef with a horseradish sauce."
+        }
+    ]
+}

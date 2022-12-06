@@ -269,3 +269,7 @@ _:-ms-input-placeholder,
 .mdl-textfield {
     width: 100%;
 }
+
+.mdl-navigation__link {
+    color: #fff !important;
+}

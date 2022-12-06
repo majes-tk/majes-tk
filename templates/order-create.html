@@ -1,23 +1,8 @@
-{% set title = lang["create-order"]%} {% extends "master.html" %} {% block body %}
+{% set title = lang["create-order"] %} {% extends "master.html" %} {% block body %}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width:100%">
-    <p>
-        <form action="" method="POST">
-            {{lang["create-order"]}}
-            <div id="name">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="first" name="order-title">
-                    <label class="mdl-textfield__label" for="first">{{lang["order-title"]}}</label>
-                </div>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield">
-                <textarea class="mdl-textfield__input" type="text" rows="3" id="sample5" name="order-text" style="width: 100%"></textarea>
-                <label class="mdl-textfield__label" for="sample5">{{lang["order-text-placeholder"]}}</label>
-            </div>
-
-            <button type="submit" class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                {{lang["create"]}}
-            </button>
-        </form>
-    </p>
+    <h3>{{lang["select-restaurant"]}}</h3>
 </div>
+{% for restaurant in m.Restaurant.query.all() %}
+{% include 'restaurant-card.html' %}
+{% endfor %}
 {% endblock %}

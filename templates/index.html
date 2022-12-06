@@ -2,31 +2,35 @@
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width:100%">
     <h3>{{lang["my-orders"]}}</h3>
     <p>
-        <table id="dataTable" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width: 100%;">
-            <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric sort-key">{{lang["order-status"]}}</th>
-                    <th class="mdl-data-table__cell--non-numeric sort-key">{{lang["order-title"]}}</th>
-                    <th class="mdl-data-table__cell--non-numeric sort-key">{{lang["order-time"]}}</th>
-                    {% if current_user.highPermissionLevel %}
-                    <th class="mdl-data-table__cell--non-numeric sort-key">{{lang["order-created-by"]}}</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            {% for order in orders %} {% if not order.hidden %} {% if order.created_by.id == current_user.id or current_user.highPermissionLevel %}
-            <tr style="cursor: pointer" onclick="window.location='view/{{order.id}}'">
-                <td class="mdl-data-table__cell--non-numeric" style="background: {{ 'lightcoral' if order.is_open and not hasValidReply(order.id) else 'khaki' if order.is_open and hasValidReply(order.id) else 'lightgreen'}}">{{ lang["order-status-open"] if order.is_open and not hasValidReply(order.id) else lang["order-status-assigned"] if order.is_open and hasValidReply(order.id) else lang["order-status-closed"]}}
-
-                    <span class="material-icons order-icon">{{ 'error_outline' if order.is_open and not hasValidReply(order.id) else 'pending' if order.is_open and hasValidReply(order.id) else 'check_circle'}}</span>
-                </td>
-                <td class="mdl-data-table__cell--non-numeric">{{order.title}}</td>
-                <td class="mdl-data-table__cell--non-numeric">{{getTime(order.time)}}</td>
-                {% if current_user.highPermissionLevel %}
-                <td class="mdl-data-table__cell--non-numeric">{{order.created_by.fullname}}</td>
-                {% endif %}
-            </tr>
-            {% endif %} {% endif %} {% endfor %}
-        </table>
     </p>
+    {% if orders|length == 0 %}
+    <p>{{lang["no-orders"]}}</p>
+    {% else %}
+    <ul class="demo-list-three mdl-list">
+        {% for order in orders %}
+        <li class="mdl-list__item mdl-list__item--three-line" onclick="window.location='view-order/{{order.id}}'" style="background-color: transparent; transition-property: background-color; transition-duration: 0.3s; border-radius: 0.5em;" onmouseover="this.style.backgroundColor='#cccccc';" onmouseout="this.style.backgroundColor='transparent';">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon" tyle="border-radius: 10% ;">{{ 'error_outline' if order.is_open and not
+                    hasValidReply(order.id) else 'pending' if order.is_open and hasValidReply(order.id) else
+                    'check_circle'}}</i>
+                <span>
+                    Order #{{order.id}}
+                </span>
+                <span class="mdl-list__item-text-body">
+                    {{order.time}}
+                </span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+                <p>{{ "{:,.2f}".format(order.price)}}€</p>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h3>{{lang["restaurant-list-title"]}}</h3>
 </div>
+{% for restaurant in m.Restaurant.query.all() %}
+{% include 'restaurant-card.html' %}
+{% endfor %}
 {% endblock %}

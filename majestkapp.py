@@ -6,13 +6,9 @@ from sqlite3 import IntegrityError
 from flask import Flask, session, render_template, redirect, url_for, request, abort, g
 from flask_migrate import Migrate
 import sqlalchemy
+import sqlalchemy.exc
 import models as m
-
-try:
-    import userconfig as config
-except:
-    import config
-
+import config
 
 import json
 import user
@@ -56,7 +52,9 @@ def global_template_vars():
         "current_user": g.current_user,
         "ctime": time.ctime,
         "getTime": user.getTime,
-        "hasValidReply": user.hasValidReply
+        "hasValidReply": user.hasValidReply,
+        "m": m,
+        "config": config
     }
 
 
@@ -83,21 +81,31 @@ def home():
     # the index and home landing page. this displays all the active and closed orders.
     if config.REQUIRE_LOGIN:
         if "login" in session.keys() and session['login']:
-            return render_template('index.html', orders=m.Order.query.all())
+            if g.current_user.highPermissionLevel:
+                return render_template('index.html', orders=m.Order.query.all())
+            elif g.current_user.isRestaurant:
+                restaurants = m.Restaurant.query.filter_by(linked_user_id=g.current_user.id).all()
+                orders = list(m.Order.query.filter_by(created_by_id = g.current_user.id).all())
+                for restaurant in restaurants:
+                    restaurantItems = m.Dish.query.filter_by(
+                        served_at_id=restaurant.id).all()
+                    orders += (m.Order.query.join(
+                        m.OrderItem, m.Order.id == m.OrderItem.order_id)
+                        .filter(m.OrderItem.dish in restaurantItems)
+                        .group_by(m.Order.id)
+                    )
+                return render_template('index.html', orders=orders)
+            return render_template('index.html', orders=m.Order.query.filter_by(created_by_id = g.current_user.id).all())
         else:
             return redirect(url_for("login"))
     else:
         return render_template("index.html")
 
 
-@app.route('/create', methods=['GET', 'POST'])
-def createOrder():
+@app.route('/order', methods=['GET'])
+def startOrder():
     # the page to create a new order on.
     if "login" in session.keys() and session['login']:
-        if request.method == 'POST':
-            user.create_order(
-                request.form["order-title"], request.form["order-text"], None, g.current_user, None)
-            return redirect(url_for('home'))
         return render_template('order-create.html')
     else:
         abort(403)
@@ -105,17 +113,17 @@ def createOrder():
 # the page to view and edit orders.
 
 
-@app.route('/view-order/<orderid>', methods=['GET', 'POST'])
+@app.route('/view-order/<orderid>')
 def viewOrder(orderid):
-    order = m.Order.query.filter_by(id=orderid).first()
-    if order == None:
-        abort(404)
     if "login" in session.keys() and session['login']:
-        if request.method == 'POST':
-            order.assigned_to_id = request.form["new-assignee-id"]
-            m.db.session.commit()
-        order_replies = m.OrderReply.query.filter_by(main_order=order)
-        return render_template('order-view.html', order=order, replies=order_replies)
+        order = m.Order.query.filter_by(id=orderid).first()
+        items = m.OrderItem.query.filter_by(order_id=orderid).all()
+        if order == None:
+            abort(404)
+        if order.created_by.id == g.current_user.id or g.current_user.highPermissionLevel or g.current_user.isRestaurant:
+            order_replies = m.OrderReply.query.filter_by(main_order=order)
+            return render_template('order-view.html', order=order, replies=order_replies, items=items)
+        abort(403)
     else:
         abort(403)
 
@@ -251,7 +259,7 @@ def resetPW():
 
 @app.route('/add-admin', methods=['GET', 'POST'])
 def addAdmin():
-    
+
     if os.path.exists(config.CREATE_ADMIN_FILE):
         try:
             if request.method == 'POST':
@@ -270,10 +278,10 @@ def addUser():
     try:
         if request.method == 'POST':
             user.create_user(
-                str.lower(request.form["username"]), 
-                request.form["email"], 
+                str.lower(request.form["username"]),
+                request.form["email"],
                 user.hashPassword(
-                request.form["password"]), 
+                    request.form["password"]),
                 highPermissionLevel=False)
             return redirect(url_for('login'))
     except Exception:
@@ -284,56 +292,108 @@ def addUser():
 @app.route('/add-dish/<restaurantid>', methods=['GET', 'POST'])
 def addDish(restaurantid):
     if (
-        "login" in session.keys() 
-        and session['login'] 
-        and ( 
-            g.current_user.highPermissionLevel 
+        "login" in session.keys()
+        and session['login']
+        and (
+            g.current_user.highPermissionLevel
             or g.current_user.isRestaurant
-            )
-        ):
+        )
+    ):
         if request.method == 'POST':
             user.create_dish(
                 request.form['dishname'],
-                float(request.form['price']),
+                float(request.form['price'].replace(',', '.')),
                 request.form['description'],
                 m.Restaurant.query.filter_by(id=restaurantid).first().id
             )
-            return redirect(url_for('home'))
-        return render_template('dish-create.html')
-    else: 
+            return redirect('/view-restaurant/'+restaurantid)
+        return render_template('dish-create.html', restaurantid=restaurantid)
+    else:
         abort(403)
 
-@app.route('/add-restaurant', methods=['GET', 'POST'])
-def addReastaurant():
+
+@app.route('/add-restaurant', methods=['GET', 'POST'])  # type: ignore
+def addRestaurant():
     if g.current_user.highPermissionLevel:
         if request.method == 'POST':
             id = user.create_restaurant(
                 request.form["restaurant-name"],
                 request.form["restaurant-info"],
                 request.form["restaurant-style"],
-                request.form["restaurant-delivery_cost"], 
+                request.form["restaurant-delivery_cost"],
                 request.form["linked-user-email"])
-            print(id)
             return redirect(url_for('home'))
         return render_template('restaurant-create.html')
-    abort
+    abort(403)
+
 
 @app.route('/view-restaurant/<restaurantid>')
 def view_restaurant(restaurantid):
+    restaurant = m.Restaurant.query.filter_by(id=restaurantid).first()
+    if restaurant == None:
+        abort(404)
+    orders = None
+    dishesquery = list(m.Dish.query.filter_by(served_at_id=restaurantid).all())
+    if g.current_user.isRestaurant:
+        restaurantItems = m.Dish.query.filter_by(
+            served_at_id=restaurantid).all()
+        orders = (m.Order.query.join(
+            m.OrderItem, m.Order.id == m.OrderItem.order_id)
+            .filter(m.OrderItem.dish in restaurantItems)
+            .group_by(m.Order.id)
+        )
+    dishes = []
+    for i in range(len(list(dishesquery))):
+        dish = dishesquery[i]
+        if dish.media == None:
+            dish.media = "/static/images/restaurant/"+str(dish.served_at_id)+"/dish/"+str(dish.id)+".jpg"
+        dishes.append(dish)
+    return render_template('restaurant-view.html', orders=orders, dishes=dishes, restaurant=restaurant)
+
+
+# type: ignore
+@app.route('/add-to-cart/<restaurantid>/<dishid>', methods=['GET'])
+def add_to_cart(restaurantid, dishid):
     if "login" in session.keys() and session["login"]:
-        restaurant = m.Restaurant.query.filter_by(id=restaurantid).first()
-        if restaurant == None:
-            abort(404)
-        if g.current_user.isRestaurant: 
-            orders = m.Order.query.filter_by(restaurant_id = restaurantid)
-        dishesquery = m.Dish.query.filter_by(served_at_id = restaurantid)
-        dishes = []
-        for i in range(len(list(dishesquery))):
-            dish = dishesquery[i]
-            print(dish.media)
-            dish.media = json.loads(dish.media)
-            dishes.append(dish)
-        return render_template('restaurant-view.html', orders=orders, dishes=dishes, restaurant=restaurant)
+        user.add_to_cart(dishid, g.current_user.id)
+        return redirect('/view-restaurant/'+restaurantid)
+    return redirect('login')
+
+
+@app.route('/remove-from-cart/<dishid>', methods=['GET'])  # type: ignore
+def remove_from_cart(dishid):
+    if "login" in session.keys() and session["login"]:
+        user.remove_from_cart(dishid, g.current_user.id)
+        return redirect('/view-cart')
+    return redirect('login')
+
+
+@app.route('/view-cart', methods=['GET'])  # type: ignore
+def view_cart():
+    if "login" in session.keys() and session["login"]:
+        cart_content = m.CartItem.query.filter_by(
+            user_id=g.current_user.id).all()
+        total = user.calcTotal(g.current_user.id)
+        return render_template('cart-view.html', cart_content=cart_content, total=total)
+    return redirect('login')
+
+
+@app.route('/finish-order', methods=['GET'])  # type: ignore
+def finish_order():
+    if "login" in session.keys() and session["login"]:
+        cart_content = m.CartItem.query.filter_by(
+            user_id=g.current_user.id).all()
+        total = user.calcTotal(g.current_user.id)
+        fee = config.FEE
+        return render_template("finish-order.html", cart_content=cart_content, total=total, fee=fee)
+    return redirect('login')
+
+
+@app.route('/userconfirmorder', methods=['GET'])
+def createOrder():
+    if "login" in session.keys() and session['login']:
+        id = user.create_order(g.current_user)
+        return redirect('/view-order/'+str(id))
     else:
         abort(403)
 

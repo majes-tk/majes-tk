@@ -1,76 +1,84 @@
-{% set title = lang["view-order"]+" #"+order.id|string + " " + lang["order-created-by"] + " " + order.created_by.fullname %} {% extends "master.html" %} {% block body %}
+{% set title = lang["view-order"]+" #"+order.id|string + " " + lang["order-created-by"] + " " +
+order.created_by.fullname %} {% extends "master.html" %} {% block body %}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%">
-    <h2>{{order.title}}</h2>
-    {{lang["order-created-by"] + " " + order.created_by.fullname}}
-    <div class="aux" style="float: left">
-        <span class="mdl-chip order-status-chip" style="background: {{ 'lightcoral' if order.is_open and not hasValidReply(order.id) else 'khaki' if order.is_open and hasValidReply(order.id) else 'lightgreen'}}">
+  {{lang["order-created-by"] + " " + order.created_by.fullname}}
+  <div class="aux" style="float: left">
+    <span class="mdl-chip order-status-chip"
+      style="background: {{ 'lightcoral' if order.is_open and not hasValidReply(order.id) else 'khaki' if order.is_open and hasValidReply(order.id) else 'lightgreen'}}">
       <span class="mdl-chip__text">
-        {{ lang["order-status-open"] if order.is_open and not hasValidReply(order.id) else lang["order-status-assigned"] if order.is_open and hasValidReply(order.id) else lang["order-status-closed"]}}
-        <span class="material-icons order-icon">{{ 'error_outline' if order.is_open and not hasValidReply(order.id) else 'pending' if order.is_open and hasValidReply(order.id) else 'check_circle'}}</span>
-        </span>
-        </span>
-        {% if g.current_user.id == order.created_by_id or g.current_user.highPermissionLevel %} {% if order.is_open %}
-        <a href="{{order.id}}/close" style="text-decoration: none">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+        {{ lang["order-status-open"] if order.is_open and not hasValidReply(order.id) else lang["order-status-assigned"]
+        if order.is_open and hasValidReply(order.id) else lang["order-status-closed"]}}
+        <span class="material-icons order-icon">{{ 'error_outline' if order.is_open and not hasValidReply(order.id) else
+          'pending' if order.is_open and hasValidReply(order.id) else 'check_circle'}}</span>
+      </span>
+    </span>
+    {% if g.current_user.id == order.created_by_id or g.current_user.highPermissionLevel %} {% if order.is_open %}
+    <a href="{{order.id}}/close" style="text-decoration: none">
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
         {{lang["close-order"]}}
-      	    </button>
-        </a>
-        {% else %}
-        <a href="{{order.id}}/reopen" style="text-decoration: none">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-        {{lang["reopen-order"]}}
-            </button>
-        </a>
-        {% endif %} {% endif %} {% if g.current_user.highPermissionLevel %} {% if not order.hidden %}
-        <a href="{{order.id}}/hide" style="text-decoration: none">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-        {{lang["hide-order"]}}
-      	    </button>
-        </a>
-        {% else %}
-        <a href="{{order.id}}/unhide" style="text-decoration: none">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-        {{lang["unhide-order"]}}
-            </button>
-        </a>
-        {% endif %} {% endif %}
-    </div>
-    <hr />
-    <p>{{order.text}}</p>
+      </button>
+    </a>
+    {% endif %} {% endif %}
+  </div>
+  <hr />
+
+  {% if items|length == 0 %}
+  <p>{{lang["cart-empty"]}}</p>
+  {% else %}
+  <ul class="demo-list-three mdl-list">
+    {% for cart_item in items %}
+    {% set dish = cart_item.dish %}
+    <li class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-icon" tyle="border-radius: 10% ;">dinner_dining</i>
+        <span>{{dish.name}}</span>
+        <span class="mdl-list__item-text-body">
+          {{dish.served_at.name}}
+          {% if cart_item.item_note %}
+            | {{lang["note"]}}: {{cart_item.item_note}}
+          {% endif %}
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+        <p>{{ "{:,.2f}".format(dish.price)}}€</p>
+    </span>
+  </li>
+    {% endfor %}
+  </ul>
+  <hr>
+  <p style="text-align: right;">{{lang["payment-historic-value"]+" {:,.2f}".format(order.price)}}€.</p>
+  {% endif %} 
+
 </div>
-{% for orderreply in replies %} {% if (orderreply.isNote and current_user.highPermissionLevel) or (not orderreply.isNote)%}
+{% for orderreply in replies %} {% if (orderreply.isNote and current_user.highPermissionLevel) or (not
+orderreply.isNote)%}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" , style="width: 100%; ">
-    <div class="aux" style="float: left;{{'background: burlywood;' if orderreply.isNote }} ">
-        {% if orderreply.isNote %} {{lang["order-note-by"] + " " + orderreply.created_by.fullname}} {% else %} {{lang["order-reply-by"] + " " + orderreply.created_by.fullname}} {% endif %}
-    </div>
-    <hr />
-    <p>{{orderreply.text}}</p>
+  <div class="aux" style="float: left;{{'background: burlywood;' if orderreply.isNote }} ">
+    {% if orderreply.isNote %} {{lang["order-note-by"] + " " + orderreply.created_by.fullname}} {% else %}
+    {{lang["order-reply-by"] + " " + orderreply.created_by.fullname}} {% endif %}
+  </div>
+  <hr />
+  <p>{{orderreply.text}}</p>
 </div>
 {% endif %} {% endfor %}
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col" style="width: 100%">
-    <form action="{{url_for( 'createOrderReply', orderid=order.id)}}" method="POST">
-        {{lang["write-reply"]}}</br>
-        <div class="mdl-textfield mdl-js-textfield ">
-            <textarea class="mdl-textfield__input " type="text" rows="3 " id="reply-textbox" name="reply-text" style="width: 100% "></textarea>
-            <label class="mdl-textfield__label " for="reply-textbox">{{lang["order-text-placeholder"]}}</label
-      >
+  <form action="{{url_for( 'createOrderReply', orderid=order.id)}}" method="POST">
+    {{lang["write-reply"]}}</br>
+    <div class="mdl-textfield mdl-js-textfield ">
+      <textarea class="mdl-textfield__input " type="text" rows="3 " id="reply-textbox" name="reply-text"
+        style="width: 100% "></textarea>
+      <label class="mdl-textfield__label " for="reply-textbox">{{lang["order-text-placeholder"]}}</label>
     </div>
     {% if g.current_user.highPermissionLevel %}
-    <button
-      type="submit"
+    <button type="submit"
       class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white "
-      name="action"
-      value="SaveNote"
-    >
+      name="action" value="SaveNote">
       {{lang["save-as-note"]}}
-  	</button>
+    </button>
     {% endif %}
-    <button
-      type="submit"
+    <button type="submit"
       class="mdl-cell mdl-cell--12-col mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--white "
-      name="action"
-      value="Save"
-    >
+      name="action" value="Save">
       {{lang["save"]}}
     </button>
   </form>
