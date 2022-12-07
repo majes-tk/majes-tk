@@ -95,7 +95,7 @@ def home():
                         .group_by(m.Order.id)
                     )
                 return render_template('index.html', orders=orders)
-            return render_template('index.html', orders=m.Order.query.filter_by(created_by_id = g.current_user.id).all())
+            return render_template('index.html', orders=m.Order.query.filter_by(created_by_id = g.current_user.id, hidden=False).all())
         else:
             return redirect(url_for("login"))
     else:
