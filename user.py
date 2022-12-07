@@ -55,7 +55,6 @@ def create_order(created_by):
         new_order_item.item_note = item.item_note
         new_order_item.order_id = new_order.id
         m.db.session.add(new_order_item)
-        new_order.price += item.dish.price
         m.CartItem.query.filter_by(id = item.id).delete() 
     m.db.session.commit()
     return new_order.id
