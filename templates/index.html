@@ -8,7 +8,6 @@
     {% else %}
     <ul class="demo-list-three mdl-list">
         {% for order in orders %}
-        {% if not order.hidden %}
         <li class="mdl-list__item mdl-list__item--three-line" onclick="window.location='view-order/{{order.id}}'" style="background-color: transparent; transition-property: background-color; transition-duration: 0.3s; border-radius: 0.5em;" onmouseover="this.style.backgroundColor='#cccccc';" onmouseout="this.style.backgroundColor='transparent';">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-icon" tyle="border-radius: 10% ;">{{ 'error_outline' if order.is_open and not
@@ -25,7 +24,6 @@
                 <p>{{ "{:,.2f}".format(order.price)}}€</p>
             </span>
         </li>
-        {% endif %}
         {% endfor %}
     </ul>
     {% endif %}
