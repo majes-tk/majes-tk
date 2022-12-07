@@ -346,7 +346,7 @@ def view_restaurant(restaurantid):
     for i in range(len(list(dishesquery))):
         dish = dishesquery[i]
         if dish.media == None:
-            dish.media = "/static/images/restaurant/"+str(dish.served_at_id)+"/dish/"+str(dish.id)+".jpg"
+            dish.media = "/static/images/restaurant/"+str(dish.served_at_id)+"/"+str(dish.id)+".jpg"
         dishes.append(dish)
     return render_template('restaurant-view.html', orders=orders, dishes=dishes, restaurant=restaurant)
 
